@@ -21,6 +21,6 @@ const Box = (props: ThreeElements["mesh"]) => {
       <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
     </mesh>
   );
-}
+};
 
 export default Box;

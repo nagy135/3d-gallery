@@ -1,21 +1,28 @@
 import { useThree } from "@react-three/fiber";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-const CameraController = () => {
-  const { camera, gl } = useThree();
-  useEffect(
-    () => {
-      const controls = new OrbitControls(camera, gl.domElement);
+interface ICameraController {
+  onRotate: (change: number) => void;
+}
 
-      controls.minDistance = 3;
-      controls.maxDistance = 20;
-      return () => {
-        controls.dispose();
-      };
-    },
-    [camera, gl]
-  );
+const CameraController: FC<ICameraController> = ({ onRotate }) => {
+  const { camera, gl } = useThree();
+  useEffect(() => {
+    const controls = new OrbitControls(camera, gl.domElement);
+
+    controls.minDistance = 3;
+    controls.maxDistance = 20;
+    controls.minPolarAngle = Math.PI / 2;
+    controls.maxPolarAngle = Math.PI / 2;
+    controls.addEventListener("change", () =>
+      onRotate(controls.getAzimuthalAngle())
+    );
+
+    return () => {
+      controls.dispose();
+    };
+  }, [camera, gl]);
   return null;
 };
 
