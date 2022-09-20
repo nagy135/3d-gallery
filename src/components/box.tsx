@@ -12,6 +12,7 @@ const Box = (props: ThreeElements["mesh"]) => {
     <mesh
       {...props}
       ref={ref}
+      castShadow={true}
       scale={clicked ? 2.5 : 2}
       onClick={(event) => click(!clicked)}
       onPointerOver={(event) => hover(true)}

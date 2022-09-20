@@ -1,9 +1,10 @@
 import { useLoader } from "@react-three/fiber";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useRef, useState } from "react";
+import { useFrame, ThreeElements } from "@react-three/fiber";
 import * as THREE from "three";
 import img from "../images/test.png";
 import CameraController from "@components/camera-controller";
-import { FrontSide } from "three";
+import { Plane } from "@react-three/drei";
 
 interface ICircleFormation {
   count: number;
@@ -12,7 +13,15 @@ interface ICircleFormation {
 const SPREAD_DISTANCE = 3;
 
 const CircleFormation: FC<ICircleFormation> = ({ count }) => {
-  const [rotation, setRotation] = useState(0);
+  const refMap = useRef<Record<number, THREE.Mesh | null>>({});
+  useFrame((state, delta) => {
+    for (const mesh of Object.values(refMap.current)) {
+      if (!mesh) continue;
+      mesh.rotation.y = rotationRef.current;
+    }
+  });
+
+  const rotationRef = useRef(0);
   const positions: [number, number, number][] = [];
   for (let i = 0; i < count; i++) {
     const radians = ((2 * Math.PI) / count) * i;
@@ -23,14 +32,24 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
   const texture = useLoader(THREE.TextureLoader, img);
   return (
     <>
-      <CameraController onRotate={setRotation} />
-      <mesh position={[0,-2,0]} rotation={[Math.PI/2+Math.PI,0,0]} key={'ground'}>
-        <planeBufferGeometry attach="geometry" args={[10, 10]} />
-        <meshBasicMaterial attach="material" shadowSide={FrontSide} />
-      </mesh>
+      <CameraController onRotate={(x: number) => (rotationRef.current = x)} />
+      <Plane
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, -1, 0]}
+        args={[1000, 1000]}
+      >
+        <meshStandardMaterial attach="material" color="black" />
+      </Plane>
       {positions.map((e, i) => {
         return (
-          <mesh position={e} rotation={[0, rotation, 0]} key={`image-${i}`}>
+          <mesh
+            ref={(r) => {
+              refMap.current[i] = r;
+            }}
+            position={e}
+            rotation={[0, rotationRef.current, 0]}
+            key={`image-${i}`}
+          >
             <planeBufferGeometry attach="geometry" args={[3, 3]} />
             <meshBasicMaterial attach="material" map={texture} />
           </mesh>
