@@ -2,7 +2,12 @@ import { useLoader } from "@react-three/fiber";
 import { FC, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import img from "../images/test.png";
+import img1 from "../images/image1.jpg";
+import img2 from "../images/image2.jpg";
+import img3 from "../images/image3.jpg";
+import img4 from "../images/image4.jpg";
+import img5 from "../images/image5.jpg";
+import img6 from "../images/image6.jpg";
 import CameraController from "@components/camera-controller";
 import { Plane } from "@react-three/drei";
 
@@ -29,7 +34,7 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
     const z = Math.cos(radians);
     positions.push([x * SPREAD_DISTANCE, 0, z * SPREAD_DISTANCE]);
   }
-  const texture = useLoader(THREE.TextureLoader, img);
+  const tex = useLoader(THREE.TextureLoader, [img1, img2, img3, img4, img5, img6]);
   return (
     <>
       <CameraController onRotate={(x: number) => (rotationRef.current = x)} />
@@ -51,7 +56,7 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
             key={`image-${i}`}
           >
             <planeBufferGeometry attach="geometry" args={[3, 3]} />
-            <meshBasicMaterial attach="material" map={texture} />
+            <meshBasicMaterial attach="material" map={tex[i]} />
           </mesh>
         );
       })}
