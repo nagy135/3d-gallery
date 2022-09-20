@@ -7,16 +7,16 @@ const Box = (props: ThreeElements["mesh"]) => {
   const [hovered, hover] = useState(false);
   const [clicked, click] = useState(false);
 
-  useFrame((state, delta) => (ref.current.rotation.x += 0.01));
+  useFrame(() => (ref.current.rotation.x += 0.01));
   return (
     <mesh
       {...props}
       ref={ref}
       castShadow={true}
       scale={clicked ? 2.5 : 2}
-      onClick={(event) => click(!clicked)}
-      onPointerOver={(event) => hover(true)}
-      onPointerOut={(event) => hover(false)}
+      onClick={() => click(!clicked)}
+      onPointerOver={() => hover(true)}
+      onPointerOut={() => hover(false)}
     >
       <boxGeometry args={[1, 1, 1]} />
       <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />

@@ -1,6 +1,6 @@
 import { useLoader } from "@react-three/fiber";
-import { FC, useCallback, useRef, useState } from "react";
-import { useFrame, ThreeElements } from "@react-three/fiber";
+import { FC, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import img from "../images/test.png";
 import CameraController from "@components/camera-controller";
@@ -14,7 +14,7 @@ const SPREAD_DISTANCE = 3;
 
 const CircleFormation: FC<ICircleFormation> = ({ count }) => {
   const refMap = useRef<Record<number, THREE.Mesh | null>>({});
-  useFrame((state, delta) => {
+  useFrame(() => {
     for (const mesh of Object.values(refMap.current)) {
       if (!mesh) continue;
       mesh.rotation.y = rotationRef.current;
