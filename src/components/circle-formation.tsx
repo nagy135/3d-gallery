@@ -10,6 +10,7 @@ import img5 from "../images/image5.jpg";
 import img6 from "../images/image6.jpg";
 import CameraController from "@components/camera-controller";
 import { Plane } from "@react-three/drei";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 interface ICircleFormation {
   count: number;
@@ -19,7 +20,9 @@ const SPREAD_DISTANCE = 3;
 
 const CircleFormation: FC<ICircleFormation> = ({ count }) => {
   const refMap = useRef<Record<number, THREE.Mesh | null>>({});
+  const cameraControllerRef = useRef<OrbitControls | null>(null);
   useFrame(() => {
+    cameraControllerRef.current?.update();
     for (const mesh of Object.values(refMap.current)) {
       if (!mesh) continue;
       mesh.rotation.y = rotationRef.current;
@@ -37,7 +40,9 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
   const tex = useLoader(THREE.TextureLoader, [img1, img2, img3, img4, img5, img6]);
   return (
     <>
-      <CameraController onRotate={(x: number) => (rotationRef.current = x)} />
+      <CameraController
+        instanceRef={cameraControllerRef}
+        onRotate={(x: number) => (rotationRef.current = x)} />
       <Plane
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, -1, 0]}
