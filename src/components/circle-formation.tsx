@@ -1,5 +1,5 @@
-import { useLoader } from "@react-three/fiber";
-import { FC, useRef } from "react";
+import { ThreeEvent, useLoader, useThree } from "@react-three/fiber";
+import { FC, useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import img1 from "../images/image1.jpg";
@@ -21,28 +21,63 @@ const SPREAD_DISTANCE = 3;
 const CircleFormation: FC<ICircleFormation> = ({ count }) => {
   const refMap = useRef<Record<number, THREE.Mesh | null>>({});
   const cameraControllerRef = useRef<OrbitControls | null>(null);
-  useFrame(() => {
+  const rotationRef = useRef(0);
+
+  const [clickedImage, setClickedImage] = useState<number | null>(null);
+  const [positions, setPositions] = useState<
+    { x: number; y: number; z: number }[]
+  >([]);
+
+  const tex = useLoader(THREE.TextureLoader, [
+    img1,
+    img2,
+    img3,
+    img4,
+    img5,
+    img6,
+  ]);
+  useFrame((rootState) => {
     cameraControllerRef.current?.update();
+    if (clickedImage !== null) {
+      const position = positions[clickedImage];
+      rootState.camera.lookAt(position.x, position.y, position.z);
+      rootState.camera.updateProjectionMatrix();
+      if (cameraControllerRef.current)
+        rotationRef.current = cameraControllerRef.current.getAzimuthalAngle();
+    }
     for (const mesh of Object.values(refMap.current)) {
       if (!mesh) continue;
       mesh.rotation.y = rotationRef.current;
     }
   });
 
-  const rotationRef = useRef(0);
-  const positions: [number, number, number][] = [];
-  for (let i = 0; i < count; i++) {
-    const radians = ((2 * Math.PI) / count) * i;
-    const x = Math.sin(radians);
-    const z = Math.cos(radians);
-    positions.push([x * SPREAD_DISTANCE, 0, z * SPREAD_DISTANCE]);
-  }
-  const tex = useLoader(THREE.TextureLoader, [img1, img2, img3, img4, img5, img6]);
+  const imageClicked = (e: ThreeEvent<MouseEvent>, i: number) => {
+    // NOTE: if other one is selected, we ignore events on invisible ones
+    if (clickedImage !== null && clickedImage !== i) return;
+    e.stopPropagation();
+    setClickedImage((prev) => {
+      if (prev === null || prev !== i) return i;
+      return null;
+    });
+  };
+
+  useEffect(() => {
+    for (let i = 0; i < count; i++) {
+      const radians = ((2 * Math.PI) / count) * i;
+      const x = Math.sin(radians);
+      const z = Math.cos(radians);
+      setPositions((prev) => [
+        ...prev,
+        { x: x * SPREAD_DISTANCE, y: 0, z: z * SPREAD_DISTANCE },
+      ]);
+    }
+  }, [count]);
   return (
     <>
       <CameraController
         instanceRef={cameraControllerRef}
-        onRotate={(x: number) => (rotationRef.current = x)} />
+        onRotate={(x: number) => (rotationRef.current = x)}
+      />
       <Plane
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, -1, 0]}
@@ -53,10 +88,12 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
       {positions.map((e, i) => {
         return (
           <mesh
+            visible={clickedImage === null || clickedImage === i}
+            onDoubleClick={(e) => imageClicked(e, i)}
             ref={(r) => {
               refMap.current[i] = r;
             }}
-            position={e}
+            position={[e.x, e.y, e.z]}
             rotation={[0, rotationRef.current, 0]}
             key={`image-${i}`}
           >
