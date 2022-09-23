@@ -36,15 +36,9 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
     img5,
     img6,
   ]);
-  useFrame((rootState) => {
+  useFrame(() => {
     cameraControllerRef.current?.update();
-    if (clickedImage !== null) {
-      const position = positions[clickedImage];
-      rootState.camera.lookAt(position.x, position.y, position.z);
-      rootState.camera.updateProjectionMatrix();
-      if (cameraControllerRef.current)
-        rotationRef.current = cameraControllerRef.current.getAzimuthalAngle();
-    }
+    if (clickedImage !== null) return;
     for (const mesh of Object.values(refMap.current)) {
       if (!mesh) continue;
       mesh.rotation.y = rotationRef.current;
@@ -56,8 +50,11 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
     if (clickedImage !== null && clickedImage !== i) return;
     e.stopPropagation();
     setClickedImage((prev) => {
-      if (prev === null || prev !== i) return i;
-      return null;
+      let res: number | null = null;
+      if (prev === null || prev !== i) res = i;
+      if (res && cameraControllerRef.current)
+        cameraControllerRef.current.enabled = res ? true : false;
+      return res;
     });
   };
 
@@ -93,7 +90,7 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
             ref={(r) => {
               refMap.current[i] = r;
             }}
-            position={[e.x, e.y, e.z]}
+            position={clickedImage === i ? [0, 0, 1] : [e.x, e.y, e.z]}
             rotation={[0, rotationRef.current, 0]}
             key={`image-${i}`}
           >
