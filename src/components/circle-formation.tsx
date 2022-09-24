@@ -46,14 +46,20 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
   });
 
   const imageClicked = (e: ThreeEvent<MouseEvent>, i: number) => {
-    // NOTE: if other one is selected, we ignore events on invisible ones
-    if (clickedImage !== null && clickedImage !== i) return;
+    if (!cameraControllerRef.current) return;
+    if (clickedImage !== null) {
+      if (clickedImage === i) {
+        // clicked the same one
+        cameraControllerRef.current.enabled = true;
+      } else {
+        // clicked invisible one while selected different one already
+        return;
+      }
+    } else cameraControllerRef.current.enabled = false;
     e.stopPropagation();
     setClickedImage((prev) => {
       let res: number | null = null;
       if (prev === null || prev !== i) res = i;
-      if (res && cameraControllerRef.current)
-        cameraControllerRef.current.enabled = res ? true : false;
       return res;
     });
   };
@@ -94,7 +100,7 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
             rotation={[0, rotationRef.current, 0]}
             key={`image-${i}`}
           >
-            <planeBufferGeometry attach="geometry" args={[3, 3]} />
+            <planeBufferGeometry attach="geometry" args={[4, 3]} />
             <meshBasicMaterial attach="material" map={tex[i]} />
           </mesh>
         );
