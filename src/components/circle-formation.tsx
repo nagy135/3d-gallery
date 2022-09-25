@@ -11,17 +11,21 @@ import img6 from "../images/image6.jpg";
 import CameraController from "@components/camera-controller";
 import { Plane } from "@react-three/drei";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { mapRange } from "../utils";
 
 interface ICircleFormation {
   count: number;
 }
 
-const SPREAD_DISTANCE = 3;
+const VIEWPORT_SCALING = { min: 0.2, max: 2.0 };
+const SPREAD = 4;
+const IMAGE_WIDTH = 3;
 
 const CircleFormation: FC<ICircleFormation> = ({ count }) => {
   const refMap = useRef<Record<number, THREE.Mesh | null>>({});
   const cameraControllerRef = useRef<OrbitControls | null>(null);
   const rotationRef = useRef(0);
+  const { viewport, camera } = useThree();
 
   const [clickedImage, setClickedImage] = useState<number | null>(null);
   const [positions, setPositions] = useState<
@@ -65,16 +69,28 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
   };
 
   useEffect(() => {
+    if (!viewport) return;
+    const newVal = Math.min(mapRange(
+      viewport.width,
+      8,
+      21.3,
+      VIEWPORT_SCALING.min,
+      VIEWPORT_SCALING.max
+    ), 0.8);
+    camera.zoom = newVal;
+    camera.updateProjectionMatrix();
+
     for (let i = 0; i < count; i++) {
+      const multiplier = SPREAD;
       const radians = ((2 * Math.PI) / count) * i;
       const x = Math.sin(radians);
       const z = Math.cos(radians);
       setPositions((prev) => [
         ...prev,
-        { x: x * SPREAD_DISTANCE, y: 0, z: z * SPREAD_DISTANCE },
+        { x: x * multiplier, y: 0, z: z * multiplier },
       ]);
     }
-  }, [count]);
+  }, [count, viewport, camera]);
   return (
     <>
       <CameraController
@@ -89,6 +105,9 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
         <meshStandardMaterial attach="material" color="black" />
       </Plane>
       {positions.map((e, i) => {
+        const texture = tex[i];
+        if (!texture || !texture.image) return null;
+        const ratio = texture.image.width / texture.image.height;
         return (
           <mesh
             visible={clickedImage === null || clickedImage === i}
@@ -96,12 +115,15 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
             ref={(r) => {
               refMap.current[i] = r;
             }}
-            position={clickedImage === i ? [0, 0, 1] : [e.x, e.y, e.z]}
+            position={clickedImage === i ? [0, 0, 0] : [e.x, e.y, e.z]}
             rotation={[0, rotationRef.current, 0]}
             key={`image-${i}`}
           >
-            <planeBufferGeometry attach="geometry" args={[4, 3]} />
-            <meshBasicMaterial attach="material" map={tex[i]} />
+            <planeBufferGeometry
+              attach="geometry"
+              args={[IMAGE_WIDTH, IMAGE_WIDTH / ratio]}
+            />
+            <meshBasicMaterial attach="material" map={texture} />
           </mesh>
         );
       })}
