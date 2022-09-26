@@ -52,13 +52,8 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
   const imageClicked = (e: ThreeEvent<MouseEvent>, i: number) => {
     if (!cameraControllerRef.current) return;
     if (clickedImage !== null) {
-      if (clickedImage === i) {
-        // clicked the same one
-        cameraControllerRef.current.enabled = true;
-      } else {
-        // clicked invisible one while selected different one already
-        return;
-      }
+      if (clickedImage !== i) return;
+      cameraControllerRef.current.enabled = true;
     } else cameraControllerRef.current.enabled = false;
     e.stopPropagation();
     setClickedImage((prev) => {
@@ -70,13 +65,16 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
 
   useEffect(() => {
     if (!viewport) return;
-    const newVal = Math.min(mapRange(
-      viewport.width,
-      8,
-      21.3,
-      VIEWPORT_SCALING.min,
-      VIEWPORT_SCALING.max
-    ), 0.8);
+    const newVal = Math.min(
+      mapRange(
+        viewport.width,
+        8,
+        21.3,
+        VIEWPORT_SCALING.min,
+        VIEWPORT_SCALING.max
+      ),
+      0.8
+    );
     camera.zoom = newVal;
     camera.updateProjectionMatrix();
 
