@@ -1,4 +1,4 @@
-import { ThreeEvent, useLoader, useThree } from "@react-three/fiber";
+import { ThreeEvent, useLoader, useThree, Vector3 } from "@react-three/fiber";
 import { FC, useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
@@ -106,14 +106,24 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
         const texture = tex[i];
         if (!texture || !texture.image) return null;
         const ratio = texture.image.width / texture.image.height;
+
         return (
           <mesh
             visible={clickedImage === null || clickedImage === i}
             onDoubleClick={(e) => imageClicked(e, i)}
+            onClick={() => console.log("click")}
             ref={(r) => {
               refMap.current[i] = r;
             }}
-            position={clickedImage === i ? [0, 0, 0] : [e.x, e.y, e.z]}
+            position={
+              clickedImage === i
+                ? [
+                    Math.sin(rotationRef.current) * SPREAD ,
+                    0,
+                    Math.cos(rotationRef.current) * SPREAD,
+                  ]
+                : [e.x, e.y, e.z]
+            }
             rotation={[0, rotationRef.current, 0]}
             key={`image-${i}`}
           >
