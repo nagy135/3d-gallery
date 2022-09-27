@@ -25,6 +25,7 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
   const refMap = useRef<Record<number, THREE.Mesh | null>>({});
   const cameraControllerRef = useRef<OrbitControls | null>(null);
   const rotationRef = useRef(0);
+  const canClickRef = useRef(true);
   const { viewport, camera } = useThree();
 
   const [clickedImage, setClickedImage] = useState<number | null>(null);
@@ -89,11 +90,15 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
       ]);
     }
   }, [count, viewport, camera]);
+
   return (
     <>
       <CameraController
         instanceRef={cameraControllerRef}
-        onRotate={(x: number) => (rotationRef.current = x)}
+        onRotate={(x: number) => {
+          rotationRef.current = x;
+          canClickRef.current = false;
+        }}
       />
       <Plane
         rotation={[-Math.PI / 2, 0, 0]}
@@ -110,15 +115,15 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
         return (
           <mesh
             visible={clickedImage === null || clickedImage === i}
-            onDoubleClick={(e) => imageClicked(e, i)}
-            onClick={() => console.log("click")}
+            onPointerDown={() => (canClickRef.current = true)}
+            onPointerUp={(e) => canClickRef.current && imageClicked(e, i)}
             ref={(r) => {
               refMap.current[i] = r;
             }}
             position={
               clickedImage === i
                 ? [
-                    Math.sin(rotationRef.current) * SPREAD ,
+                    Math.sin(rotationRef.current) * SPREAD,
                     0,
                     Math.cos(rotationRef.current) * SPREAD,
                   ]
