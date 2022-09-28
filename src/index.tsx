@@ -32,7 +32,15 @@ createRoot(document.getElementById("root") as HTMLElement).render(
         position={[5, 1, 0]}
         // castShadow
       />
-<Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+      <Stars
+        radius={100}
+        depth={50}
+        count={5000}
+        factor={4}
+        saturation={0}
+        fade
+        speed={1}
+      />
       <CircleFormation count={6} />
     </Canvas>
   </div>
