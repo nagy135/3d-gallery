@@ -41,7 +41,7 @@ createRoot(document.getElementById("root") as HTMLElement).render(
         fade
         speed={1}
       />
-      <CircleFormation count={6} />
+      <CircleFormation count={8} />
     </Canvas>
   </div>
 );
