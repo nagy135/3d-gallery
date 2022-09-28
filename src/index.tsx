@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { CSSProperties } from "react";
 import CircleFormation from "@components/circle-formation";
 import "index.css";
-import { Cloud, Sky } from "@react-three/drei";
+import { Cloud, Environment, Sky } from "@react-three/drei";
 
 const style: CSSProperties = {
   width: "100vw",

@@ -1,4 +1,4 @@
-import { ThreeEvent, useLoader, useThree, Vector3 } from "@react-three/fiber";
+import { ThreeEvent, useLoader, useThree } from "@react-three/fiber";
 import { FC, useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
@@ -9,10 +9,9 @@ import img4 from "../images/image4.jpg";
 import img5 from "../images/image5.jpg";
 import img6 from "../images/image6.jpg";
 import CameraController from "@components/camera-controller";
-import { Plane } from "@react-three/drei";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { mapRange } from "../utils";
-import { Color } from "three";
+import GrassFloor from "./grass-floor";
 
 interface ICircleFormation {
   count: number;
@@ -101,13 +100,7 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
           canClickRef.current = false;
         }}
       />
-      <Plane
-        rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, -1, 0]}
-        args={[1000, 1000]}
-      >
-        <meshStandardMaterial attach="material" color={"rgb(26, 225, 20)"}/>
-      </Plane>
+      <GrassFloor dimensions={4} size={15}/>
       {positions.map((e, i) => {
         const texture = tex[i];
         if (!texture || !texture.image) return null;
