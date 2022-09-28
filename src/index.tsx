@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { CSSProperties } from "react";
 import CircleFormation from "@components/circle-formation";
 import "index.css";
-import { Cloud, Environment, Sky } from "@react-three/drei";
+import { Cloud, Sky, Stars } from "@react-three/drei";
 
 const style: CSSProperties = {
   width: "100vw",
@@ -32,6 +32,7 @@ createRoot(document.getElementById("root") as HTMLElement).render(
         position={[5, 1, 0]}
         // castShadow
       />
+<Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
       <CircleFormation count={6} />
     </Canvas>
   </div>
