@@ -25,7 +25,7 @@ createRoot(document.getElementById("root") as HTMLElement).render(
         width={10} // Width of the full cloud
         depth={1.5} // Z-dir depth
         segments={20} // Number of particles
-        position={[5, 5, 3]}
+        position={[5, 8, 3]}
       />
       <directionalLight
         intensity={0.5}
