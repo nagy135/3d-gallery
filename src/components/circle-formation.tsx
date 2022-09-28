@@ -106,7 +106,7 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
         position={[0, -1, 0]}
         args={[1000, 1000]}
       >
-        <meshStandardMaterial attach="material" color={"rgb(60, 115, 45)"}/>
+        <meshStandardMaterial attach="material" color={"rgb(26, 225, 20)"}/>
       </Plane>
       {positions.map((e, i) => {
         const texture = tex[i];
