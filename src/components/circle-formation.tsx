@@ -12,6 +12,7 @@ import CameraController from "@components/camera-controller";
 import { Plane } from "@react-three/drei";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { mapRange } from "../utils";
+import { Color } from "three";
 
 interface ICircleFormation {
   count: number;
@@ -105,7 +106,7 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
         position={[0, -1, 0]}
         args={[1000, 1000]}
       >
-        <meshStandardMaterial attach="material" color="black" />
+        <meshStandardMaterial attach="material" color={"rgb(60, 115, 45)"}/>
       </Plane>
       {positions.map((e, i) => {
         const texture = tex[i];
