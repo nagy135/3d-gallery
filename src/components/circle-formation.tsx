@@ -10,6 +10,7 @@ import Model from "./model";
 interface ICircleFormation {
   count: number;
   content: {
+    lift?: number;
     image: string;
     model: any;
     rotation?: [number, number, number];
@@ -47,6 +48,7 @@ const CircleFormation: FC<ICircleFormation> = ({ count, content }) => {
 
   const imageClicked = (e: ThreeEvent<MouseEvent>, i: number) => {
     if (!cameraControllerRef.current) return;
+    if (content[i].model === null) return;
     e.stopPropagation();
     setClicked((prev) => {
       const next = [...prev];
@@ -81,7 +83,6 @@ const CircleFormation: FC<ICircleFormation> = ({ count, content }) => {
       ]);
     }
   }, [count, viewport, camera]);
-  console.log("================\n", "clicked: ", clicked, "\n================");
 
   return (
     <>
@@ -105,13 +106,13 @@ const CircleFormation: FC<ICircleFormation> = ({ count, content }) => {
                   visible={clicked[i]}
                   model={content[i].model}
                   rotation={content[i].rotation ?? [0, 0, 0]}
-                  position={[e.x, e.y, e.z]}
+                  position={[e.x, e.y + (content[i].lift ?? 0), e.z]}
                 />
               </Suspense>
             ) : null}
             <mesh
               visible={content[i] === null || !clicked[i]}
-              onPointerUp={(e) => imageClicked(e, i)}
+              onPointerDown={(e) => imageClicked(e, i)}
               ref={(r) => {
                 refMap.current[i] = r;
               }}

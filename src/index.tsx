@@ -59,11 +59,13 @@ createRoot(document.getElementById("root") as HTMLElement).render(
           {
             image: img1,
             model: "gamsha.gltf",
+            lift: 1,
             rotation: [0, Math.PI / 2, 0],
           },
           {
             image: img2,
             model: "v_cart_coin.gltf",
+            lift: 2,
             rotation: [Math.PI / 2, 0, 0],
           },
           {
