@@ -44,7 +44,8 @@ createRoot(document.getElementById("root") as HTMLElement).render(
       />
       <CircleFormation count={8} />
       <Suspense fallback={null}>
-        <Model model={"gamsha.gltf"}/>
+        <Model model={"gamsha.gltf"} rotation={[0, Math.PI/2,0]} position={[0, 2, 0]}/>
+        <Model model={"v_cart_coin.gltf"} rotation={[Math.PI /2, 0,0]} position={[2, 2, 1]}/>
       </Suspense>
     </Canvas>
   </div>
