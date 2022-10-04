@@ -1,9 +1,10 @@
 import { createRoot } from "react-dom/client";
 import { Canvas } from "@react-three/fiber";
-import { CSSProperties } from "react";
+import { CSSProperties, Suspense } from "react";
 import CircleFormation from "@components/circle-formation";
 import "index.css";
 import { Cloud, Sky, Stars } from "@react-three/drei";
+import Model from "@components/model";
 
 const style: CSSProperties = {
   width: "100vw",
@@ -42,6 +43,9 @@ createRoot(document.getElementById("root") as HTMLElement).render(
         speed={1}
       />
       <CircleFormation count={8} />
+      <Suspense fallback={null}>
+        <Model fileUrl={"./models/gamsha.stl"}/>
+      </Suspense>
     </Canvas>
   </div>
 );
