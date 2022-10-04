@@ -1,11 +1,12 @@
-import React, { useLayoutEffect }from 'react'; 
- import { useGLTF } from '@react-three/drei'; 
- import * as THREE from 'three'; 
-  
-const Submarine = ({currentColor}: any) => { 
-   const { scene } = useGLTF('./gamsha.gltf'); 
-  
-  
-   return <primitive object={scene} /> 
- }; 
-export default Submarine;
+import { useGLTF } from "@react-three/drei";
+
+const Model = ({model} : {model: string}) => {
+  const { scene } = useGLTF(model);
+
+  return (
+    <mesh rotation={[0, 90,0]} position={[0, 2, 0]}>
+      <primitive object={scene} />
+    </mesh>
+  );
+};
+export default Model;

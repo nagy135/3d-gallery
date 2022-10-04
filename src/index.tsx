@@ -44,7 +44,7 @@ createRoot(document.getElementById("root") as HTMLElement).render(
       />
       <CircleFormation count={8} />
       <Suspense fallback={null}>
-        <Model fileUrl={"./models/gamsha.stl"}/>
+        <Model model={"gamsha.gltf"}/>
       </Suspense>
     </Canvas>
   </div>
