@@ -104,7 +104,7 @@ const CircleFormation: FC<ICircleFormation> = ({ count }) => {
           canClickRef.current = false;
         }}
       />
-      <GrassFloor dimensions={3} size={15}/>
+      <GrassFloor dimensions={11} size={3}/>
       {positions.map((e, i) => {
         const texture = tex[i];
         if (!texture || !texture.image) return null;
