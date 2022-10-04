@@ -14,6 +14,9 @@
     ],
     "nodes" : [
         {
+            "extras" : {
+                "BoolToolRoot" : 1
+            },
             "mesh" : 0,
             "name" : "Shopping_Cart_Coin",
             "scale" : [
@@ -29,13 +32,27 @@
             "name" : "Material.001",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.027166347950696945,
-                    0.07487980276346207,
-                    0.6643282175064087,
+                    0,
+                    0,
+                    0,
                     1
                 ],
                 "metallicFactor" : 0,
-                "roughnessFactor" : 0.49059632420539856
+                "roughnessFactor" : 0.880426824092865
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.8981969952583313,
+                    1,
+                    0.9598821997642517,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
             }
         }
     ],
@@ -58,7 +75,8 @@
                         "NORMAL" : 5,
                         "TEXCOORD_0" : 6
                     },
-                    "indices" : 7
+                    "indices" : 7,
+                    "material" : 1
                 }
             ]
         }
