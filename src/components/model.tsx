@@ -9,7 +9,6 @@ interface IModel {
 }
 
 const Model: FC<IModel> = ({model, rotation, position, visible}) => {
-  console.log({model, rotation, position, visible});
   const { scene } = useGLTF(model);
 
   return (
