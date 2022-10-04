@@ -8,7 +8,6 @@ import { mapRange } from "../utils";
 import Model from "./model";
 
 interface ICircleFormation {
-  count: number;
   content: {
     lift?: number;
     image: string;
@@ -21,7 +20,7 @@ const VIEWPORT_SCALING = { min: 0.2, max: 2.0 };
 const SPREAD = 4;
 const IMAGE_WIDTH = 3;
 
-const CircleFormation: FC<ICircleFormation> = ({ count, content }) => {
+const CircleFormation: FC<ICircleFormation> = ({ content }) => {
   const refMap = useRef<Record<number, THREE.Mesh | null>>({});
   const cameraControllerRef = useRef<OrbitControls | null>(null);
   const rotationRef = useRef(0);
@@ -29,7 +28,7 @@ const CircleFormation: FC<ICircleFormation> = ({ count, content }) => {
 
   const { viewport, camera } = useThree();
   const [clicked, setClicked] = useState<boolean[]>(
-    new Array(count).fill(false)
+    new Array(content.length).fill(false)
   );
 
   const [positions, setPositions] = useState<
@@ -73,9 +72,9 @@ const CircleFormation: FC<ICircleFormation> = ({ count, content }) => {
     camera.zoom = newVal;
     camera.updateProjectionMatrix();
 
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < content.length; i++) {
       const multiplier = SPREAD;
-      const radians = ((2 * Math.PI) / count) * i;
+      const radians = ((2 * Math.PI) / content.length) * i;
       const x = Math.sin(radians);
       const z = Math.cos(radians);
       setPositions((prev) => [
@@ -83,7 +82,7 @@ const CircleFormation: FC<ICircleFormation> = ({ count, content }) => {
         { x: x * multiplier, y: 0, z: z * multiplier },
       ]);
     }
-  }, [count, viewport, camera]);
+  }, [content, viewport, camera]);
 
   const handlePointer = (
     e: ThreeEvent<MouseEvent> | null,

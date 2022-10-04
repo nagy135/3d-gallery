@@ -54,7 +54,6 @@ createRoot(document.getElementById("root") as HTMLElement).render(
       />
       <GrassFloor dimensions={3} size={15} />
       <CircleFormation
-        count={8}
         content={[
           {
             image: img1,
