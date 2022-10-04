@@ -25,6 +25,8 @@ const CircleFormation: FC<ICircleFormation> = ({ count, content }) => {
   const refMap = useRef<Record<number, THREE.Mesh | null>>({});
   const cameraControllerRef = useRef<OrbitControls | null>(null);
   const rotationRef = useRef(0);
+  const useEventRef = useRef(false);
+
   const { viewport, camera } = useThree();
   const [clicked, setClicked] = useState<boolean[]>(
     new Array(count).fill(false)
@@ -46,10 +48,9 @@ const CircleFormation: FC<ICircleFormation> = ({ count, content }) => {
     }
   });
 
-  const imageClicked = (e: ThreeEvent<MouseEvent>, i: number) => {
+  const imageClicked = (i: number) => {
     if (!cameraControllerRef.current) return;
     if (content[i].model === null) return;
-    e.stopPropagation();
     setClicked((prev) => {
       const next = [...prev];
       next[i] = !next[i];
@@ -84,6 +85,22 @@ const CircleFormation: FC<ICircleFormation> = ({ count, content }) => {
     }
   }, [count, viewport, camera]);
 
+  const handlePointer = (
+    e: ThreeEvent<MouseEvent> | null,
+    event: "up" | "down" | "drag",
+    i?: number
+  ) => {
+    if (e) e.stopPropagation();
+    if (event === "down") {
+      useEventRef.current = true;
+    } else if (event === "drag") {
+      useEventRef.current = false;
+    } else if (event === "up") {
+      if (useEventRef.current) if (i !== undefined) imageClicked(i);
+      useEventRef.current = false;
+    }
+  };
+
   return (
     <>
       <CameraController
@@ -112,7 +129,9 @@ const CircleFormation: FC<ICircleFormation> = ({ count, content }) => {
             ) : null}
             <mesh
               visible={content[i] === null || !clicked[i]}
-              onPointerDown={(e) => imageClicked(e, i)}
+              onPointerDown={(e) => handlePointer(e, "down")}
+              onPointerUp={(e) => handlePointer(e, "up", i)}
+              onPointerMove={() => handlePointer(null, "drag")}
               ref={(r) => {
                 refMap.current[i] = r;
               }}
