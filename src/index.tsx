@@ -5,6 +5,16 @@ import CircleFormation from "@components/circle-formation";
 import "index.css";
 import { Cloud, Sky, Stars } from "@react-three/drei";
 import Model from "@components/model";
+import GrassFloor from "@components/grass-floor";
+
+import img1 from "./images/image1.jpg";
+import img2 from "./images/image2.jpg";
+import img3 from "./images/image3.jpg";
+import img4 from "./images/image4.jpg";
+import img5 from "./images/image5.jpg";
+import img6 from "./images/image6.jpg";
+import img7 from "./images/image7.jpg";
+import img8 from "./images/image8.jpg";
 
 const style: CSSProperties = {
   width: "100vw",
@@ -42,11 +52,46 @@ createRoot(document.getElementById("root") as HTMLElement).render(
         fade
         speed={1}
       />
-      <CircleFormation count={8} />
-      <Suspense fallback={null}>
-        <Model model={"gamsha.gltf"} rotation={[0, Math.PI/2,0]} position={[0, 2, 0]}/>
-        <Model model={"v_cart_coin.gltf"} rotation={[Math.PI /2, 0,0]} position={[2, 2, 1]}/>
-      </Suspense>
+      <GrassFloor dimensions={3} size={15} />
+      <CircleFormation
+        count={8}
+        content={[
+          {
+            image: img1,
+            model: "gamsha.gltf",
+            rotation: [0, Math.PI / 2, 0],
+          },
+          {
+            image: img2,
+            model: "v_cart_coin.gltf",
+            rotation: [Math.PI / 2, 0, 0],
+          },
+          {
+            image: img3,
+            model: null,
+          },
+          {
+            image: img4,
+            model: null,
+          },
+          {
+            image: img5,
+            model: null,
+          },
+          {
+            image: img6,
+            model: null,
+          },
+          {
+            image: img7,
+            model: null,
+          },
+          {
+            image: img8,
+            model: null,
+          },
+        ]}
+      />
     </Canvas>
   </div>
 );
