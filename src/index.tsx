@@ -16,7 +16,7 @@ createRoot(document.getElementById("root") as HTMLElement).render(
     <Canvas shadows={false}>
       <Sky
         distance={450000}
-        sunPosition={[5, 1, 0]}
+        sunPosition={[0, 5, 12]}
         inclination={0}
         azimuth={0.25}
       />
@@ -30,7 +30,7 @@ createRoot(document.getElementById("root") as HTMLElement).render(
       />
       <directionalLight
         intensity={0.5}
-        position={[5, 1, 0]}
+        position={[0, 5, 12]}
         // castShadow
       />
       <Stars
