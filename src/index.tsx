@@ -57,6 +57,17 @@ createRoot(document.getElementById("root") as HTMLElement).render(
       <CircleFormation
         content={[
           {
+            image: nautilusGears,
+            model: "nautilus_gears.gltf",
+            lift: -0.8
+          },
+          {
+            image: planetaryGearset,
+            model: "planetary_gearset_moving.gltf",
+            lift: -1,
+            rotation: [0,  Math.PI  , 0],
+          },
+          {
             image: suitcase,
             model: "gamsha.gltf",
             lift: 1,
@@ -66,16 +77,6 @@ createRoot(document.getElementById("root") as HTMLElement).render(
             image: cartCoins,
             model: "v_cart_coin_v2.gltf",
             lift: -1,
-          },
-          {
-            image: planetaryGearset,
-            model: "planetary_gearset_moving.gltf",
-            lift: -1,
-            rotation: [0, 1.5 * Math.PI  , 0],
-          },
-          {
-            image: nautilusGears,
-            model: null,
           },
           {
             image: rotaryToys,
