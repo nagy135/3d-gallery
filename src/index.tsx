@@ -64,9 +64,8 @@ createRoot(document.getElementById("root") as HTMLElement).render(
           },
           {
             image: cartCoins,
-            model: "v_cart_coin.gltf",
-            lift: 2,
-            rotation: [Math.PI / 2, 0, 0],
+            model: "v_cart_coin_v2.gltf",
+            lift: -1,
           },
           {
             image: planetaryGearset,
