@@ -6,14 +6,14 @@ import "index.css";
 import { Cloud, Sky, Stars } from "@react-three/drei";
 import GrassFloor from "@components/grass-floor";
 
-import img1 from "./images/image1.jpg";
-import img2 from "./images/image2.jpg";
-import img3 from "./images/image3.jpg";
-import img4 from "./images/image4.jpg";
-import img5 from "./images/image5.jpg";
-import img6 from "./images/image6.jpg";
-import img7 from "./images/image7.jpg";
-import img8 from "./images/image8.jpg";
+import suitcase from "./images/suitcase.jpg";
+import cartCoins from "./images/cart_coins.jpg";
+import planetaryGearset from "./images/planetary_gearset.jpg";
+import nautilusGears from "./images/nautilus_gears.jpg";
+import rastaBottle from "./images/rasta_bottle.jpg";
+import rotaryToys from "./images/rotary_toys.jpg";
+import doubleScrew from "./images/double_screw.jpg";
+import gengarBottle from "./images/gengar_bottle.jpg";
 
 const style: CSSProperties = {
   width: "100vw",
@@ -57,41 +57,41 @@ createRoot(document.getElementById("root") as HTMLElement).render(
       <CircleFormation
         content={[
           {
-            image: img1,
+            image: suitcase,
             model: "gamsha.gltf",
             lift: 1,
             rotation: [0, Math.PI / 2, 0],
           },
           {
-            image: img2,
+            image: cartCoins,
             model: "v_cart_coin.gltf",
             lift: 2,
             rotation: [Math.PI / 2, 0, 0],
           },
           {
-            image: img3,
+            image: planetaryGearset,
             model: "planetary_gearset_moving.gltf",
             lift: -1,
             rotation: [0, 1.5 * Math.PI  , 0],
           },
           {
-            image: img4,
+            image: nautilusGears,
             model: null,
           },
           {
-            image: img5,
+            image: rastaBottle,
             model: null,
           },
           {
-            image: img6,
+            image: rotaryToys,
             model: null,
           },
           {
-            image: img7,
+            image: doubleScrew,
             model: null,
           },
           {
-            image: img8,
+            image: gengarBottle,
             model: null,
           },
         ]}
