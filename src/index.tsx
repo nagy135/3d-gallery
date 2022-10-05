@@ -59,7 +59,8 @@ createRoot(document.getElementById("root") as HTMLElement).render(
           {
             image: nautilusGears,
             model: "nautilus_gears.gltf",
-            lift: -0.8
+            lift: -0.5,
+            rotation: [0, 0, 2.5*Math.PI/36],
           },
           {
             image: planetaryGearset,
