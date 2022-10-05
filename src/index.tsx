@@ -1,10 +1,9 @@
 import { createRoot } from "react-dom/client";
 import { Canvas } from "@react-three/fiber";
-import { CSSProperties, Suspense } from "react";
+import { CSSProperties } from "react";
 import CircleFormation from "@components/circle-formation";
 import "index.css";
 import { Cloud, Sky, Stars } from "@react-three/drei";
-import Model from "@components/model";
 import GrassFloor from "@components/grass-floor";
 
 import img1 from "./images/image1.jpg";
@@ -42,6 +41,10 @@ createRoot(document.getElementById("root") as HTMLElement).render(
         intensity={0.5}
         position={[0, 5, 12]}
         // castShadow
+      />
+      <directionalLight
+        intensity={0.5}
+        position={[5, 0, 0]}
       />
       <Stars
         radius={100}
