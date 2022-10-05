@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, Vector3 } from "@react-three/fiber";
 import { CSSProperties } from "react";
 import CircleFormation from "@components/circle-formation";
 import "index.css";
@@ -20,31 +20,29 @@ const style: CSSProperties = {
   height: "100vh",
 };
 
+const sunPosition: Vector3 = [0, 5, 12];
+
 createRoot(document.getElementById("root") as HTMLElement).render(
   <div style={style}>
     <Canvas shadows={false}>
       <Sky
         distance={450000}
-        sunPosition={[0, 5, 12]}
+        sunPosition={sunPosition}
         inclination={0}
         azimuth={0.25}
       />
       <Cloud
         opacity={0.5}
         speed={0.1} // Rotation speed
-        width={10} // Width of the full cloud
-        depth={1.5} // Z-dir depth
+        width={3} // Width of the full cloud
+        depth={2.5} // Z-dir depth
         segments={20} // Number of particles
         position={[5, 8, 3]}
       />
       <directionalLight
         intensity={0.5}
-        position={[0, 5, 12]}
+        position={sunPosition}
         // castShadow
-      />
-      <directionalLight
-        intensity={0.5}
-        position={[5, 0, 0]}
       />
       <Stars
         radius={100}

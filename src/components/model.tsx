@@ -28,7 +28,6 @@ const Model: FC<IModel> = ({ model: modelSrc, rotation, position, visible }) => 
   useFrame((_, delta) => {
     mixer?.update(delta);
   });
-  // const { scene } = useGLTF(model);
   useEffect(() => useGLTF.preload(modelSrc), []);
 
   return (

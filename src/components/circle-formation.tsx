@@ -18,6 +18,7 @@ interface ICircleFormation {
 
 const VIEWPORT_SCALING = { min: 0.2, max: 2.0 };
 const SPREAD = 4;
+const SPREAD_FLASHLIGHT = SPREAD + 2;
 const IMAGE_WIDTH = 3;
 
 const CircleFormation: FC<ICircleFormation> = ({ content }) => {
@@ -25,6 +26,7 @@ const CircleFormation: FC<ICircleFormation> = ({ content }) => {
   const cameraControllerRef = useRef<OrbitControls | null>(null);
   const rotationRef = useRef(0);
   const useEventRef = useRef(false);
+  const flashlightRef = useRef<THREE.PointLight>(null);
 
   const { viewport, camera } = useThree();
   const [clicked, setClicked] = useState<boolean[]>(
@@ -44,6 +46,16 @@ const CircleFormation: FC<ICircleFormation> = ({ content }) => {
     for (const mesh of Object.values(refMap.current)) {
       if (!mesh) continue;
       mesh.rotation.y = rotationRef.current;
+    }
+
+    if (flashlightRef.current) {
+      const multiplier = SPREAD_FLASHLIGHT;
+      const radians = 2 * Math.PI + 0.5 + rotationRef.current;
+      const x = Math.sin(radians);
+      const z = Math.cos(radians);
+      flashlightRef.current.rotation.x = x * multiplier;
+      flashlightRef.current.rotation.y = 1;
+      flashlightRef.current.rotation.z = z * multiplier;
     }
   });
 
@@ -102,22 +114,22 @@ const CircleFormation: FC<ICircleFormation> = ({ content }) => {
 
   return (
     <>
-      <CameraController
-        instanceRef={cameraControllerRef}
-        onRotate={(x: number) => {
-          rotationRef.current = x;
-        }}
-      />
-      {positions.map((e, i) => {
-        const texture = tex[i];
-        if (!texture || !texture.image) return null;
-        const ratio = texture.image.width / texture.image.height;
-        console.log(i, [e.x, e.y + (content[i].lift ?? 0), e.z]);
+      <Suspense fallback={null}>
+        <CameraController
+          instanceRef={cameraControllerRef}
+          onRotate={(x: number) => {
+            rotationRef.current = x;
+          }}
+        />
+        <pointLight ref={flashlightRef} intensity={0.5} position={[0, 0, 0]} />
+        {positions.map((e, i) => {
+          const texture = tex[i];
+          if (!texture || !texture.image) return null;
+          const ratio = texture.image.width / texture.image.height;
 
-        return (
-          <>
-            {content[i].model !== null ? (
-              <Suspense fallback={null}>
+          return (
+            <>
+              {content[i].model !== null ? (
                 <Model
                   key={`model-${i}`}
                   visible={clicked[i]}
@@ -125,29 +137,34 @@ const CircleFormation: FC<ICircleFormation> = ({ content }) => {
                   rotation={content[i].rotation ?? [0, 0, 0]}
                   position={[e.x, e.y + (content[i].lift ?? 0), e.z]}
                 />
-              </Suspense>
-            ) : null}
-            <mesh
-              visible={content[i] === null || !clicked[i]}
-              onPointerDown={(e) => handlePointer(e, "down")}
-              onPointerUp={(e) => handlePointer(e, "up", i)}
-              onPointerMove={() => handlePointer(null, "drag")}
-              ref={(r) => {
-                refMap.current[i] = r;
-              }}
-              position={[e.x, e.y, e.z]}
-              rotation={[0, rotationRef.current, 0]}
-              key={`image-${i}`}
-            >
-              <planeBufferGeometry
-                attach="geometry"
-                args={[IMAGE_WIDTH, IMAGE_WIDTH / ratio]}
-              />
-              <meshBasicMaterial attach="material" map={texture} />
-            </mesh>
-          </>
-        );
-      })}
+              ) : null}
+              <mesh
+                visible={content[i] === null || !clicked[i]}
+                onPointerDown={(e) => handlePointer(e, "down")}
+                onPointerUp={(e) => handlePointer(e, "up", i)}
+                onPointerMove={() => handlePointer(null, "drag")}
+                ref={(r) => {
+                  refMap.current[i] = r;
+                }}
+                position={[e.x, e.y, e.z]}
+                rotation={[0, rotationRef.current, 0]}
+                key={`image-${i}`}
+              >
+                <planeBufferGeometry
+                  key={`image-plane-${i}`}
+                  attach="geometry"
+                  args={[IMAGE_WIDTH, IMAGE_WIDTH / ratio]}
+                />
+                <meshBasicMaterial
+                  key={`image-mesh-${i}`}
+                  attach="material"
+                  map={texture}
+                />
+              </mesh>
+            </>
+          );
+        })}
+      </Suspense>
     </>
   );
 };
