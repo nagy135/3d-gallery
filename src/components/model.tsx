@@ -1,5 +1,10 @@
 import { useGLTF } from "@react-three/drei";
+import { useLoader } from "@react-three/fiber";
 import { FC, useEffect } from "react";
+import { useFrame } from "@react-three/fiber";
+import { AnimationMixer } from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import * as THREE from "three";
 
 interface IModel {
   model: string;
@@ -8,13 +13,27 @@ interface IModel {
   rotation: [number, number, number];
 }
 
-const Model: FC<IModel> = ({ model, rotation, position, visible }) => {
-  const { scene } = useGLTF(model);
-  useEffect(() => useGLTF.preload(model), []);
+const Model: FC<IModel> = ({ model: modelSrc, rotation, position, visible }) => {
+  const model = useLoader(GLTFLoader, modelSrc);
+
+  let mixer: AnimationMixer;
+  if (model.animations.length) {
+    mixer = new THREE.AnimationMixer(model.scene);
+    model.animations.forEach((clip) => {
+      const action = mixer.clipAction(clip);
+      action.play();
+    });
+  }
+
+  useFrame((_, delta) => {
+    mixer?.update(delta);
+  });
+  // const { scene } = useGLTF(model);
+  useEffect(() => useGLTF.preload(modelSrc), []);
 
   return (
     <mesh visible={visible} rotation={rotation} position={position}>
-      <primitive object={scene} />
+      <primitive object={model.scene} />
     </mesh>
   );
 };
