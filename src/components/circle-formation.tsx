@@ -112,6 +112,7 @@ const CircleFormation: FC<ICircleFormation> = ({ content }) => {
         const texture = tex[i];
         if (!texture || !texture.image) return null;
         const ratio = texture.image.width / texture.image.height;
+        console.log(i, [e.x, e.y + (content[i].lift ?? 0), e.z]);
 
         return (
           <>

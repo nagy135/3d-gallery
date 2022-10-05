@@ -69,7 +69,9 @@ createRoot(document.getElementById("root") as HTMLElement).render(
           },
           {
             image: img3,
-            model: null,
+            model: "planetary_gearset.gltf",
+            lift: -1,
+            rotation: [0, 1.5 * Math.PI  , 0],
           },
           {
             image: img4,
