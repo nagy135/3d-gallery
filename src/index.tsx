@@ -78,16 +78,18 @@ createRoot(document.getElementById("root") as HTMLElement).render(
             model: null,
           },
           {
-            image: rastaBottle,
-            model: null,
-          },
-          {
             image: rotaryToys,
             model: null,
           },
           {
             image: doubleScrew,
             model: null,
+          },
+          {
+            image: rastaBottle,
+            model: "tikki_bottle.gltf",
+            lift: -1,
+            rotation: [0, -(Math.PI / 8), 0],
           },
           {
             image: gengarBottle,
