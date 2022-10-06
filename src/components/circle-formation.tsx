@@ -18,7 +18,7 @@ interface ICircleFormation {
 }
 
 const VIEWPORT_SCALING = { min: 0.2, max: 2.0 };
-const SPREAD = 4;
+const SPREAD = 5;
 const SPREAD_FLASHLIGHT = SPREAD + 2;
 const IMAGE_WIDTH = 3;
 

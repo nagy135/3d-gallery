@@ -98,7 +98,9 @@ createRoot(document.getElementById("root") as HTMLElement).render(
           },
           {
             image: rotaryToys,
-            model: null,
+            model: "fidget.gltf",
+            scale: [0.3, 0.3, 0.3],
+            lift: -1,
           },
           {
             image: doubleScrew,
@@ -114,7 +116,9 @@ createRoot(document.getElementById("root") as HTMLElement).render(
           },
           {
             image: gengarBottle,
-            model: null,
+            model: "gengar.gltf",
+            scale: [0.01, 0.01, 0.01],
+            rotation: [0, -(Math.PI / 8), 0],
           },
         ]}
       />
