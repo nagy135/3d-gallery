@@ -40,9 +40,17 @@ createRoot(document.getElementById("root") as HTMLElement).render(
         position={[5, 8, 3]}
       />
       <directionalLight
-        intensity={0.5}
+        intensity={1}
         position={sunPosition}
         // castShadow
+      />
+      <directionalLight
+        intensity={0.5}
+        position={[-1, 1, -3]}
+      />
+      <directionalLight
+        intensity={0.5}
+        position={[3, 1, -3]}
       />
       <Stars
         radius={100}
@@ -85,7 +93,9 @@ createRoot(document.getElementById("root") as HTMLElement).render(
           },
           {
             image: doubleScrew,
-            model: null,
+            model: "double_screw.gltf",
+            scale: [0.03, 0.03, 0.03],
+            lift: -1,
           },
           {
             image: rastaBottle,

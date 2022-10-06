@@ -13,6 +13,7 @@ interface ICircleFormation {
     image: string;
     model: any;
     rotation?: [number, number, number];
+    scale?: [number, number, number];
   }[];
 }
 
@@ -135,6 +136,7 @@ const CircleFormation: FC<ICircleFormation> = ({ content }) => {
                   visible={clicked[i]}
                   model={content[i].model}
                   rotation={content[i].rotation ?? [0, 0, 0]}
+                  scale={content[i].scale ?? [1, 1, 1]}
                   position={[e.x, e.y + (content[i].lift ?? 0), e.z]}
                 />
               ) : null}

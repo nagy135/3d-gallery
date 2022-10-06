@@ -11,9 +11,16 @@ interface IModel {
   visible: boolean;
   position: [number, number, number];
   rotation: [number, number, number];
+  scale: [number, number, number];
 }
 
-const Model: FC<IModel> = ({ model: modelSrc, rotation, position, visible }) => {
+const Model: FC<IModel> = ({
+  model: modelSrc,
+  rotation,
+  position,
+  visible,
+  scale,
+}) => {
   const model = useLoader(GLTFLoader, modelSrc);
 
   let mixer: AnimationMixer;
@@ -31,7 +38,7 @@ const Model: FC<IModel> = ({ model: modelSrc, rotation, position, visible }) => 
   useEffect(() => useGLTF.preload(modelSrc), []);
 
   return (
-    <mesh visible={visible} rotation={rotation} position={position}>
+    <mesh visible={visible} rotation={rotation} position={position} scale={scale}>
       <primitive object={model.scene} />
     </mesh>
   );
