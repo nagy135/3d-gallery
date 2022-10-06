@@ -1,6 +1,6 @@
 import { useGLTF } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
-import { FC, useEffect } from "react";
+import { FC, Suspense, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import { AnimationMixer } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -39,7 +39,9 @@ const Model: FC<IModel> = ({
 
   return (
     <mesh visible={visible} rotation={rotation} position={position} scale={scale}>
+      <Suspense fallback={null}>
       <primitive object={model.scene} />
+      </Suspense>
     </mesh>
   );
 };

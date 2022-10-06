@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { Canvas, Vector3 } from "@react-three/fiber";
-import { CSSProperties } from "react";
+import { CSSProperties, Suspense } from "react";
 import CircleFormation from "@components/circle-formation";
 import "index.css";
 import { Cloud, Sky, Stars } from "@react-three/drei";
@@ -45,14 +45,8 @@ createRoot(document.getElementById("root") as HTMLElement).render(
         position={sunPosition}
         // castShadow
       />
-      <directionalLight
-        intensity={0.5}
-        position={[-1, 1, -3]}
-      />
-      <directionalLight
-        intensity={0.5}
-        position={[3, 1, -3]}
-      />
+      <directionalLight intensity={0.5} position={[-1, 1, -3]} />
+      <directionalLight intensity={0.5} position={[3, 1, -3]} />
       <Stars
         radius={100}
         depth={50}
@@ -63,65 +57,74 @@ createRoot(document.getElementById("root") as HTMLElement).render(
         speed={1}
       />
       <GrassFloor dimensions={3} size={15} />
-      <CircleFormation
-        content={[
-          {
-            image: nautilusGears,
-            model: "nautilus_gears.gltf",
-            lift: -0.5,
-            rotation: [0, 0, 2.5*Math.PI/36],
-          },
-          {
-            image: planetaryGearset,
-            model: "planetary_gearset_moving.gltf",
-            lift: -1,
-            scale: [0.8, 0.8, 0.8],
-            rotation: [0,  Math.PI  , 0],
-          },
-          {
-            image: benchy,
-            model: "benchy.gltf",
-            scale: [0.12, 0.12, 0.12],
-            lift: -1,
-            rotation: [0, Math.PI / 2, 0],
-          },
-          {
-            image: suitcase,
-            model: "gamsha.gltf",
-            lift: 1,
-            rotation: [0, Math.PI / 2, 0],
-          },
-          {
-            image: cartCoins,
-            model: "v_cart_coin_v2.gltf",
-            lift: -1,
-          },
-          {
-            image: rotaryToys,
-            model: "fidget.gltf",
-            scale: [0.3, 0.3, 0.3],
-            lift: -1,
-          },
-          {
-            image: doubleScrew,
-            model: "double_screw.gltf",
-            scale: [0.03, 0.03, 0.03],
-            lift: -1,
-          },
-          {
-            image: rastaBottle,
-            model: "tikki_bottle.gltf",
-            lift: -1,
-            rotation: [0, -(Math.PI / 8), 0],
-          },
-          {
-            image: gengarBottle,
-            model: "gengar.gltf",
-            scale: [0.01, 0.01, 0.01],
-            rotation: [0, -(Math.PI / 8), 0],
-          },
-        ]}
-      />
+      <Suspense
+        fallback={
+          <mesh>
+            <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+            <meshStandardMaterial attach="material" transparent opacity={0.5} />
+          </mesh>
+        }
+      >
+        <CircleFormation
+          content={[
+            {
+              image: nautilusGears,
+              model: "nautilus_gears.gltf",
+              lift: -0.5,
+              rotation: [0, 0, (2.5 * Math.PI) / 36],
+            },
+            {
+              image: planetaryGearset,
+              model: "planetary_gearset_moving.gltf",
+              lift: -1,
+              scale: [0.8, 0.8, 0.8],
+              rotation: [0, Math.PI, 0],
+            },
+            {
+              image: benchy,
+              model: "benchy.gltf",
+              scale: [0.12, 0.12, 0.12],
+              lift: -1,
+              rotation: [0, Math.PI / 2, 0],
+            },
+            {
+              image: suitcase,
+              model: "gamsha.gltf",
+              lift: 1,
+              rotation: [0, Math.PI / 2, 0],
+            },
+            {
+              image: cartCoins,
+              model: "v_cart_coin_v2.gltf",
+              lift: -1,
+            },
+            {
+              image: rotaryToys,
+              model: "fidget.gltf",
+              scale: [0.3, 0.3, 0.3],
+              lift: -1,
+            },
+            {
+              image: doubleScrew,
+              model: "double_screw.gltf",
+              scale: [0.03, 0.03, 0.03],
+              lift: -1,
+            },
+            {
+              image: rastaBottle,
+              model: "tikki_bottle.gltf",
+              lift: -1,
+              rotation: [0, -(Math.PI / 8), 0],
+            },
+            {
+              image: gengarBottle,
+              model: "gengar.gltf",
+              scale: [0.01, 0.01, 0.01],
+              rotation: [0, -(Math.PI / 8), 0],
+            },
+          ]}
+        />
+      </Suspense>
     </Canvas>
   </div>
 );
