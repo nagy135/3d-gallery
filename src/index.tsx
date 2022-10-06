@@ -89,9 +89,9 @@ createRoot(document.getElementById("root") as HTMLElement).render(
             },
             {
               image: suitcase,
-              model: "gamsha.gltf",
-              lift: 1,
-              rotation: [0, Math.PI / 2, 0],
+              model: "suitcase_legs.gltf",
+              scale: [0.01, 0.01, 0.01],
+              lift: -0.5,
             },
             {
               image: cartCoins,
